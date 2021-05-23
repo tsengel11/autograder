@@ -20,4 +20,6 @@ echo $OUTPUT->header();
 
 echo "Test Page";
 
+grade_get_grades();
+
 echo $OUTPUT->footer();
