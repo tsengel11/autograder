@@ -10,6 +10,7 @@
  */
 require_once(dirname(__FILE__) . '/../../config.php');
 
+require_once($CFG->dirroot . '/local/autograder/lib.php');
 
 $PAGE->set_url(new moodle_url('/local/autograder/edit.php'));
 $PAGE->set_context(\context_system::instance());
@@ -18,22 +19,9 @@ global $CFG, $DB;
 
 echo $OUTPUT->header();
 
-echo "Test Page";
-
-$courseid = 383;
-
-$gradebookgrades = grade_get_grades($courseid, 'mod', 'quiz',898, 99);
-
-$data = new stdClass();
-$data->finalgrade = 95;
-$data->userid = 99;
-$data->id = 194762;
-
-$DB->update_record('grade_grades',$data);
-
-$gradebookgrades2 = grade_get_grades(381, 'mod', 'quiz',1112, 99);
-
-print_object($gradebookgrades);
-print_object($gradebookgrades2);
+        echo "Test Page";
+        $sourceitem= 2449;
+        $destitem = 3246;
+        update_new_grade($sourceitem,$destitem);
 
 echo $OUTPUT->footer();

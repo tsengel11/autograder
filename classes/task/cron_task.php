@@ -42,6 +42,12 @@ class cron_task extends \core\task\scheduled_task {
     public function execute() {
         global $CFG;
         require_once($CFG->dirroot . '/local/autograder/lib.php');
+
+        $grade_items=$DB->get_record('local_autograder_list',['disable_flag'=>0]);
+
+        foreach ($grade_items as $item){
+            update_new_grade($item->sourceitem,$item->destitem);
+        }
     }
 
 }
