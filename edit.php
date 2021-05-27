@@ -19,9 +19,12 @@ global $CFG, $DB;
 
 echo $OUTPUT->header();
 
-        echo "Test Page";
-        $sourceitem= 2449;
-        $destitem = 3246;
-        update_new_grade($sourceitem,$destitem);
+        $grade_items=$DB->get_records('local_autograder_list',['disable_flag'=>0]);
+        print_object($grade_items);
+        
+        foreach ($grade_items as $item){
+                echo "Update Function";
+        update_new_grade($item->source_item,$item->dest_item);
+        }
 
 echo $OUTPUT->footer();

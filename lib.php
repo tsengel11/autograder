@@ -1,8 +1,10 @@
 <?php
 
 function update_new_grade($sourceitem,$destitem){
-
+    global $DB;
+    //echo $sourceitem;
     $item_object=$DB->get_record('grade_items',['id'=>$sourceitem]);
+
     $dest_item_object=$DB->get_record('grade_items',['id'=>$destitem]);
     //print_object($item_object);
 
@@ -14,18 +16,19 @@ function update_new_grade($sourceitem,$destitem){
 
     print_object($source_grades);
 
-
     foreach($source_grades as $grade){
 
         $newgrade = array();
         $newgrade['userid'] = $grade->userid;
         $newgrade['rawgrade'] = $grade->rawgrade;
+        $newgrade['finalgrade'] = $grade->finalgrade;
 
-        $result=grade_update('mod/quiz', $item_object->courseid, 
+        $result=grade_update('mod/quiz', $dest_item_object->courseid, 
                     $item_object->itemtype, 
                     $item_object->itemmodule, 
                     $dest_item_object->iteminstance, 0, 
                     $newgrade);
+        echo $result;
     }
 
 }

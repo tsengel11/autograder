@@ -40,13 +40,15 @@ class cron_task extends \core\task\scheduled_task {
      * Run forum cron.
      */
     public function execute() {
-        global $CFG;
+        global $CFG,$DB;
         require_once($CFG->dirroot . '/local/autograder/lib.php');
 
-        $grade_items=$DB->get_record('local_autograder_list',['disable_flag'=>0]);
+        //Retrieving 
+        $grade_items=$DB->get_records('local_autograder_list',['disable_flag'=>0]);
 
+        //print_object($grade_items);
         foreach ($grade_items as $item){
-            update_new_grade($item->sourceitem,$item->destitem);
+            update_new_grade($item->source_item,$item->dest_item);
         }
     }
 
