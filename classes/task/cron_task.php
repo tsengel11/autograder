@@ -40,7 +40,7 @@ class cron_task extends \core\task\scheduled_task {
      * Run forum cron.
      */
     public function execute() {
-        global $CFG,$DB;
+        global $CFG,$DB;        
         require_once($CFG->dirroot . '/local/autograder/lib.php');
 
         //Retrieving 
