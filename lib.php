@@ -34,18 +34,40 @@ function update_new_grade($sourceitem,$destitem){
 }
 function convert_item_name($item){
     global $DB;
-    $sql = 'SELECT i.itemname, c.fullname FROM mdl_grade_items as i
-            left join mdl_course as c on i.courseid = c.id
+    $sql = 'SELECT i.itemname, c.fullname FROM {grade_items} as i
+            left join {course} as c on i.courseid = c.id
             where i.id=:itemid';
     $parameter = ['itemid'=>$item];
 
     //print_object($DB->get_record_sql($sql,$parameter,));
 
-    $result = $DB->get_record_sql($sql,$parameter, );
-
+    $result = $DB->get_record_sql($sql,$parameter);
     return $result;
 
 }
+function convert_cmid($cmid){
+    global $DB;
+    $sql = 'SELECT i.id FROM {grade_items} as i
+            left join {course_modules} as cm on i.iteminstance = cm.instance
+            where cm.id=:cmid';
+    $parameter = ['cmid'=>$cmid];
+    $result = $DB->get_record_sql($sql,$parameter);
+    return $result;
+}
+function get_cmid_details($cmid){
+    global $DB;
+    $sql = 'SELECT cm.id,
+            c.fullname,
+            q.name 
+            FROM {course_modules} as cm
+            left join {quiz} as q on cm.instance = q.id
+            left join {course} as c on cm.course = c.id
+            where cm.id=:cmid';
+    $parameter = ['cmid'=>$cmid];
+    $result = $DB->get_record_sql($sql,$parameter);
+    return $result;
+}
+
 function create_delete_buttons($id){
     global $CFG;
     return '<a href="'.$CFG->wwwroot.'/local/autograder/edit.php?id='.$id.'&mode=1"'. 'class="action-icon"><i class="icon fa fa-trash fa-fw " title="Delete" aria-label="Delete"></i></a>';
@@ -57,4 +79,8 @@ function create_deactive_buttons($id){
 function create_active_buttons($id){
     global $CFG;
     return '<a href="'.$CFG->wwwroot.'/local/autograder/edit.php?id='.$id.'&mode=3"'. 'class="action-icon"><i class="icon fa fa-check-square-o fa-fw " title="Edit" aria-label="Edit"></i></a>';
+}
+function create_delete_buttons_quiz_attemt($id){
+    global $CFG;
+    return '<a href="'.$CFG->wwwroot.'/local/autograder/edit_quiz_attempt.php?id='.$id.'&mode=1"'. 'class="action-icon"><i class="icon fa fa-trash fa-fw " title="Delete" aria-label="Delete"></i></a>';
 }

@@ -10,10 +10,10 @@ class auto_grader_form extends moodleform {
         $mform = $this->_form; // Don't forget the underscore!
         $mform->addElement('html', '<hr />');
         $mform->addElement('html', '<h4><b>Create New clustered Units</b></h4>');
-        $mform->addElement('text', 'source_item', 'Source Activity:','size="4"'); // Add elements to your form
+        $mform->addElement('text', 'source_item', 'Source Activity: (Course Module Id)','size="4"'); // Add elements to your form
         $mform->setType('source_item', PARAM_NOTAGS);                 //Default value
 
-        $mform->addElement('text', 'dest_item', 'Destination Activity:','size="4"'); // Add elements to your form
+        $mform->addElement('text', 'dest_item', 'Destination Activity:(Course Module Id)','size="4"'); // Add elements to your form
         $mform->setType('dest_item', PARAM_NOTAGS);
 
         $active_flag = array();

@@ -33,9 +33,6 @@ echo $OUTPUT->header();
     }
 
     //check the modes
-    echo $id;
-
-    echo $mode;
 
     if($mode==1){
         global $DB;
@@ -48,13 +45,15 @@ echo $OUTPUT->header();
         $dataobject->id=$id;
         $dataobject->disable_flag=1;
         $DB->update_record('local_autograder_list', $dataobject);
+        \core\notification::add("Deactivated", \core\output\notification::NOTIFY_SUCCESS);
 
     }
     elseif($mode==3){
         $dataobject = new stdClass();
         $dataobject->id=$id;
         $dataobject->disable_flag=0;
-        $DB->update_record('local_autograder_list', $dataobject,);
+        $DB->update_record('local_autograder_list', $dataobject);
+        \core\notification::add("Activated", \core\output\notification::NOTIFY_SUCCESS);
 
     }
 
@@ -68,11 +67,11 @@ echo $OUTPUT->header();
     else if ($fromform = $mform->get_data()) {
         //In this case you process validated data. $mform->get_data() returns data posted in form.
         $insertdata= new stdClass();
-        $insertdata->source_item= $fromform->source_item;
-        $insertdata->dest_item = $fromform->dest_item;
+        $insertdata->source_item= convert_cmid($fromform->source_item)->id;
+        $insertdata->dest_item = convert_cmid($fromform->dest_item)->id;
         $insertdata->disable_flag = $fromform->active_flag;
         $DB->insert_record('local_autograder_list',$insertdata);
-        redirect($CFG->wwwroot.'/local/autograder/edit.php','Schedule inserted');
+        redirect($CFG->wwwroot.'/local/autograder/edit.php','Clustered Units inserted');
 
     } else {
         // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
@@ -82,6 +81,7 @@ echo $OUTPUT->header();
 
     // Rebuilding the data array
     $data=$DB->get_records('local_autograder_list');
+
     foreach ($data as $d){
         $item_object_source = convert_item_name($d->source_item);
         $item_object_dest = convert_item_name($d->dest_item);
